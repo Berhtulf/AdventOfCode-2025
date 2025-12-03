@@ -43,9 +43,9 @@ struct Day03: AdventDay {
       var mutable = joltages
 
       repeat {
+        let remainingDigits = neededLength - indexes.count
         // find largest digit not in indexSet
         let maxValue = mutable.max()!
-        print(mutable)
         // try to find all candidates using the digit elsewhere
         var candidates = [(String, Set<Array<Int>.Index>)]()
         var currentIndex = 0
@@ -53,16 +53,31 @@ struct Day03: AdventDay {
           var tempAltIndexes = indexes
           tempAltIndexes.insert(maxAltIndex)
           let numberTwo = tempAltIndexes.sorted().map { joltages[$0].description }.joined().description
+
+          if let firstAlreadySelectedIndex = indexes.min(),
+             maxAltIndex < firstAlreadySelectedIndex,
+             mutable[maxAltIndex] < joltages[firstAlreadySelectedIndex] {
+            if joltages[(firstAlreadySelectedIndex + 1)...].filter { $0 != 0 }.count >= remainingDigits {
+              mutable[maxAltIndex] = 0
+              currentIndex = maxAltIndex + 1
+              continue
+            }
+          }
+          // value is lower then first already selected value
+          // we can complete by using indexes after maxAltIndex
+
           candidates.append((numberTwo, tempAltIndexes))
           currentIndex = maxAltIndex + 1
         }
 
         // compare all candidates and choose max
         let asd = candidates
-        let biggest = asd.max(by: {
+        guard let biggest = asd.max(by: {
           (Int($0.0) ?? 0) < (Int($1.0) ?? 0)
-        })!
+        }) else { continue }
 
+        let joltage = mutable.map(\.description).joined().description
+        print(joltage)
         print(candidates.map(\.0))
         print(biggest.0)
         indexes = biggest.1
@@ -74,26 +89,9 @@ struct Day03: AdventDay {
       } while indexes.count < neededLength
 
       let joltage = indexes.sorted().map { joltages[$0].description }.joined().description
-      print("Found", joltage)
       return partialResult + (Int(joltage) ?? 0)
     }
 
     return total
   }
 }
-/*
-001001000000011
-
-234234234234278
-234234234234270
-234234234234200
-230234234234200
-230230234234200
-230230234234200
-230230234234200
-230230234234200
-230230234234200
-230230234234200
-230230234234200
-230230234234200
-*/
