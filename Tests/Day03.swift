@@ -22,4 +22,14 @@ struct Day03Tests {
     let challenge = Day03(data: testData)
     #expect(String(describing: challenge.part2()) == "3121910778619")
   }
+
+  @Test func testPart2a() async throws {
+    let challenge = Day03(data: "4186216451718762816417959278169451")
+    #expect(String(describing: challenge.part2()) == "959278169451")
+  }
+
+  @Test func testPart2b() async throws {
+    let challenge = Day03(data: "27586298372587263982569236922936256923")
+    #expect(String(describing: challenge.part2()) == "999996256923")
+  }
 }
