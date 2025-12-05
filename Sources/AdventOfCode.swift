@@ -5,7 +5,8 @@ let allChallenges: [any AdventDay] = [
   Day01(),
   Day02(),
   Day03(),
-  Day04()
+  Day04(),
+  Day05()
 ]
 
 @main
@@ -50,7 +51,7 @@ struct AdventOfCode: AsyncParsableCommand {
     }
     switch result! {
     case .success(let success):
-      if !benchmark { print("\(named): \(success)") }
+      print("\(named): \(success),\n\t⏱ \(timing)")
     case .failure(let failure as PartUnimplemented):
       print("Day \(failure.day) part \(failure.part) unimplemented")
     case .failure(let failure):
