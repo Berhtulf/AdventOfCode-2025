@@ -65,7 +65,7 @@ struct Day05: AdventDay {
     } while didMerge
 
     return currentRanges.reduce(0) { partialResult, range in
-      range.upperBound - range.lowerBound + 1 + partialResult
+      range.count + partialResult
     }
   }
 }
